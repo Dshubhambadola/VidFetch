@@ -39,7 +39,7 @@ func main() {
 		log.Printf("Installing yt-dlp failed (might already be installed or network issue): %v", err)
 	}
 
-	dlr := downloader.NewDownloader()
+	dlr := downloader.NewDownloader(1)
 
 	fmt.Printf("Starting download for: %s\n", *urlFlag)
 	fmt.Printf("Output directory: %s\n", absPath)
