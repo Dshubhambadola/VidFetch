@@ -1,0 +1,19 @@
+{
+  "name": "VidFetch",
+  "info": {
+    "productName": "VidFetch",
+    "companyName": "VidFetch",
+    "productVersion": "1.0.0",
+    "comments": "Local video downloader"
+  },
+  "version": "2",
+  "wailsjsdir": "./frontend/wailsjs",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "author": {
+    "name": "User",
+    "email": "user@example.com"
+  },
+  "outputfilename": "VidFetch"
+}
