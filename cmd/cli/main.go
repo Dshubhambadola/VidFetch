@@ -17,6 +17,13 @@ func main() {
 	outputDirFlag := flag.String("out", "./downloads", "Output directory")
 	subsFlag := flag.Bool("subs", true, "Download subtitles")
 	embedFlag := flag.Bool("embed", true, "Embed subtitles")
+
+	// Anti-Blocking Flags
+	cookies := flag.Bool("cookies", false, "Use Chrome browser cookies")
+	proxy := flag.String("proxy", "", "Proxy URL")
+	rateLimit := flag.String("limit", "", "Rate limit (e.g. 2M)")
+	userAgent := flag.String("ua", "", "Custom User Agent")
+
 	flag.Parse()
 
 	if *urlFlag == "" {
@@ -35,11 +42,13 @@ func main() {
 	ctx := context.Background()
 
 	// Ensure yt-dlp is installed
-	if err := downloader.InstallYtDlp(ctx); err != nil {
+	binPath, err := downloader.InstallYtDlp(ctx)
+	if err != nil {
 		log.Printf("Installing yt-dlp failed (might already be installed or network issue): %v", err)
 	}
 
 	dlr := downloader.NewDownloader(1)
+	dlr.BinPath = binPath
 
 	fmt.Printf("Starting download for: %s\n", *urlFlag)
 	fmt.Printf("Output directory: %s\n", absPath)
@@ -52,6 +61,13 @@ func main() {
 		EmbedSubtitles:   *embedFlag,
 		SubtitleLangs:    []string{"all"}, // Default to all
 		SubtitleFormat:   "srt",
+
+		// Anti-Blocking
+		UseCookies:  *cookies,
+		BrowserName: "chrome",
+		ProxyURL:    *proxy,
+		RateLimit:   *rateLimit,
+		UserAgent:   *userAgent,
 	}
 
 	start := time.Now()

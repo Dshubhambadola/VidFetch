@@ -55,6 +55,18 @@ type DownloadOptions struct {
 	NoPlaylist    bool `json:"no_playlist"`
 	PlaylistStart int  `json:"playlist_start"`
 	PlaylistEnd   int  `json:"playlist_end"`
+
+	// Anti-Blocking / Advanced
+	UseCookies  bool   `json:"use_cookies"`
+	BrowserName string `json:"browser_name"` // "chrome", "firefox", "safari"
+	UserAgent   string `json:"user_agent"`
+	RateLimit   string `json:"rate_limit"`
+	ProxyURL    string `json:"proxy_url"`
+	Impersonate string `json:"impersonate"` // e.g. "chrome"
+
+	// Auto-Update
+	AutoUpdateYtdlp bool `json:"auto_update_ytdlp"`
+	UseNightly      bool `json:"use_nightly"`
 }
 
 // Downloader manages the download queue and yt-dlp execution
@@ -64,6 +76,8 @@ type Downloader struct {
 	queue      chan string // Queue of download IDs to process
 	max        int
 	OnComplete func(*Download) // Callback for persistence
+	BinPath    string          // Path to yt-dlp binary
+	Updater    *Updater
 }
 
 func NewDownloader(maxConcurrent int) *Downloader {
